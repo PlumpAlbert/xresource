@@ -1,0 +1,8 @@
+{
+	"name": "xresource-viewer",
+	"description": "Simple React application made from scratch that shows terminal colorschemes",
+	"version": "0.1.0",
+	"main": "index.js",
+	"author": "plump_albert <plumpalbert@gmail.com>",
+	"license": "MIT"
+}
