@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const htmlPlugin = new HtmlWebPackPlugin({
 	template: "./public/index.html",
@@ -6,6 +7,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 module.exports = {
 	mode: "development",
+	devtool: "source-map",
 	module: {
 		rules: [
 			{
@@ -21,5 +23,12 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [htmlPlugin],
+	plugins: [
+		htmlPlugin,
+		new webpack.DefinePlugin({
+			"process.env": {
+				API_URL: process.env.API_URL || JSON.stringify("http://localhost"),
+			},
+		}),
+	],
 };

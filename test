@@ -1,0 +1,16 @@
+# vim:ft=nginx:ts=2
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	server_name localhost;
+	root /var/www;
+
+	location / {
+		proxy_pass http://localhost:8080;
+	}
+
+	location /colorschemes {
+		autoindex on;
+		autoindex_format json;
+	}
+}
