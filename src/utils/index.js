@@ -25,7 +25,7 @@
  * Retrieves colorscheme names from server
  *
  * @async
- * @returns {Promise<void>}
+ * @returns {Promise<string[]>}
  */
 export async function getAvailableColorschemes() {
 	const response = await fetch(process.env.API_URL + "/colorschemes");
@@ -38,9 +38,8 @@ export async function getAvailableColorschemes() {
 	const colorschemes = fileNames.reduce((obj, {type, name}) => {
 		if (type !== "file") return obj;
 		if (name === "*") return obj;
-		return {...obj, [name]: {}};
-	}, {});
-	sessionStorage.setItem("colorschemes", JSON.stringify(colorschemes));
+		return [...obj, name];
+	}, []);
 	return colorschemes;
 }
 
@@ -58,9 +57,6 @@ export async function fetchColorscheme(name) {
 	if (!response.ok) {
 		throw {error: true, message: await response.text()};
 	}
-	const colorschemes = JSON.parse(sessionStorage.getItem("colorschemes"));
-	colorschemes[name] = await response.text();
-	sessionStorage.setItem("colorschemes", colorschemes);
-	console.log(colorschemes[name]);
-	return JSON.parse(colorschemes[name]);
+	const colorscheme = await response.json();
+	return colorscheme;
 }

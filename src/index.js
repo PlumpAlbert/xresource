@@ -1,32 +1,20 @@
 import React from "react";
 import {createRoot} from "react-dom/client";
-import {getAvailableColorschemes, fetchColorscheme} from "./utils";
-
-const reducer = (state, action) => {
-	switch (action.type) {
-		case "update": {
-			const {name, value} = action.payload;
-			return {...state, [name]: value};
-		}
-		case "set":
-			return action.payload;
-		default:
-			return state;
-	}
-};
+import {getAvailableColorschemes} from "./utils";
+import ColorScheme from "./components/ColorScheme";
 
 const App = () => {
-	const [colorschemes, dispatch] = React.useReducer(reducer, {});
+	const [colorschemes, setColorschemes] = React.useState([]);
 	React.useEffect(() => {
 		getAvailableColorschemes().then(result => {
-			dispatch({type: "set", payload: result});
-			fetchColorscheme(Object.keys(result)[0]).then(value => {
-				console.log("value", value);
-				dispatch({type: "update", value});
-			});
+			setColorschemes(result);
 		});
 	}, []);
-	return <h1>React from scratch</h1>;
+	return (
+		<div className="app">
+			{colorschemes && colorschemes.map(v => <ColorScheme key={v} name={v} />)}
+		</div>
+	);
 };
 
 const container = document.querySelector("main#application-root");
